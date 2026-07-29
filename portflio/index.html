@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Name — Full-Stack Developer</title>
+<meta name="description" content="Your Name — Full-Stack Developer. Portfolio, case files, and contact.">
+
+<!--
+  ============================================================
+  CUSTOMIZE THIS FILE — search for these markers and replace:
+    [NAME]        your full name
+    [ROLE]        your title / specialty
+    [TAGLINE]     one-line pitch under your name
+    [ABOUT ...]   your bio paragraph(s)
+    [SKILL ...]   your stack / tools
+    [PROJECT ...] your project case studies
+    [EXP ...]     your work history
+    [EMAIL]       your contact email
+    [SOCIAL ...]  your social / profile links
+  Images  -> ../../images/profile.jpg
+  Resume  -> ../../assets/resume.pdf
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">[NAME]<span class="logo-cursor">_</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about" data-nav>Profile</a></li>
+      <li><a href="#skills" data-nav>Stack</a></li>
+      <li><a href="#projects" data-nav>Case Files</a></li>
+      <li><a href="#experience" data-nav>Log</a></li>
+      <li><a href="#contact" data-nav class="nav-cta">Transmit</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="home">
+  <div class="grid-backdrop" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">PORTFOLIO — REV. 2026</p>
+      <h1 class="hero-title">
+        [NAME]
+      </h1>
+      <p class="hero-role">[ROLE — e.g. Full-Stack Developer]</p>
+      <p class="hero-tagline">[TAGLINE — one sentence on what you build and for whom.]</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">
+          <span>View case files</span><i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="../../assets/resume.pdf" class="btn btn-ghost" download>
+          <i class="fa-solid fa-file-arrow-down"></i><span>Download resume</span>
+        </a>
+      </div>
+      <div class="hero-socials">
+        <a href="#" aria-label="GitHub" target="_blank" rel="noopener">[SOCIAL: GitHub]<i class="fa-brands fa-github"></i></a>
+        <a href="#" aria-label="LinkedIn" target="_blank" rel="noopener">[SOCIAL: LinkedIn]<i class="fa-brands fa-linkedin"></i></a>
+        <a href="#" aria-label="Twitter / X" target="_blank" rel="noopener">[SOCIAL: X]<i class="fa-brands fa-x-twitter"></i></a>
+      </div>
+    </div>
+
+    <div class="hero-figure" aria-hidden="true">
+      <svg class="ring-svg" viewBox="0 0 360 360">
+        <circle class="ring ring-dashed" cx="180" cy="180" r="164"/>
+        <circle class="ring ring-solid" cx="180" cy="180" r="140"/>
+        <g class="ticks">
+          <line x1="180" y1="8" x2="180" y2="26"/>
+          <line x1="180" y1="334" x2="180" y2="352"/>
+          <line x1="8" y1="180" x2="26" y2="180"/>
+          <line x1="334" y1="180" x2="352" y2="180"/>
+        </g>
+      </svg>
+      <div class="portrait-frame">
+        <img src="../../images/profile.jpg" alt="Portrait of [NAME]" class="portrait">
+      </div>
+      <span class="spec-tag spec-tag-a">SUBJECT — 01</span>
+      <span class="spec-tag spec-tag-b">REV. A · 2026</span>
+    </div>
+  </div>
+  <a href="#about" class="scroll-cue" aria-label="Scroll to profile"><i class="fa-solid fa-chevron-down"></i></a>
+</header>
+
+<main>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="section" id="about">
+    <div class="section-inner">
+      <p class="eyebrow">SHEET 01 / 05 — PROFILE</p>
+      <div class="about-grid">
+        <h2 class="section-title">About</h2>
+        <div class="about-body">
+          <p>[ABOUT — Write 2–3 sentences on who you are, what kind of problems you like solving, and the tools you reach for first. Keep it concrete: name real languages, frameworks, and the kind of products you build.]</p>
+          <p>[ABOUT — Second paragraph: what you're focused on right now, or the type of team/project you're looking for.]</p>
+          <div class="about-meta">
+            <div class="meta-row"><span class="meta-label">Based in</span><span class="meta-value">[CITY, COUNTRY]</span></div>
+            <div class="meta-row"><span class="meta-label">Focus</span><span class="meta-value">[e.g. Web Platforms, APIs, DX]</span></div>
+            <div class="meta-row"><span class="meta-label">Available for</span><span class="meta-value">[e.g. Freelance / Full-time]</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section class="section section-alt" id="skills">
+    <div class="section-inner">
+      <p class="eyebrow">SHEET 02 / 05 — STACK</p>
+      <h2 class="section-title">Stack &amp; Tools</h2>
+      <div class="skills-grid">
+
+        <div class="skill-card corner-frame">
+          <i class="fa-brands fa-js skill-icon"></i>
+          <p class="skill-name">JavaScript / TypeScript</p>
+          <div class="skill-gauge" data-level="5"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="skill-card corner-frame">
+          <i class="fa-brands fa-react skill-icon"></i>
+          <p class="skill-name">React / Next.js</p>
+          <div class="skill-gauge" data-level="4"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="skill-card corner-frame">
+          <i class="fa-brands fa-node-js skill-icon"></i>
+          <p class="skill-name">Node.js</p>
+          <div class="skill-gauge" data-level="4"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="skill-card corner-frame">
+          <i class="fa-solid fa-database skill-icon"></i>
+          <p class="skill-name">PostgreSQL / SQL</p>
+          <div class="skill-gauge" data-level="4"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="skill-card corner-frame">
+          <i class="fa-brands fa-python skill-icon"></i>
+          <p class="skill-name">Python</p>
+          <div class="skill-gauge" data-level="3"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="skill-card corner-frame">
+          <i class="fa-brands fa-docker skill-icon"></i>
+          <p class="skill-name">Docker / CI</p>
+          <div class="skill-gauge" data-level="3"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="skill-card corner-frame">
+          <i class="fa-brands fa-aws skill-icon"></i>
+          <p class="skill-name">AWS / Cloud</p>
+          <div class="skill-gauge" data-level="3"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="skill-card corner-frame">
+          <i class="fa-solid fa-diagram-project skill-icon"></i>
+          <p class="skill-name">System Design</p>
+          <div class="skill-gauge" data-level="4"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+      </div>
+      <!-- Edit [SKILL] items above: swap icon class, name, and data-level (1–5) -->
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section class="section" id="projects">
+    <div class="section-inner">
+      <p class="eyebrow">SHEET 03 / 05 — CASE FILES</p>
+      <h2 class="section-title">Selected Work</h2>
+      <div class="projects-grid">
+
+        <article class="project-card corner-frame">
+          <p class="file-id">FILE_01</p>
+          <h3>[PROJECT ONE — Name]</h3>
+          <p class="project-desc">[Describe the problem, your role, and the outcome in 1–2 sentences.]</p>
+          <div class="tag-row">
+            <span class="tag">React</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span>
+          </div>
+          <div class="project-links">
+            <a href="#" target="_blank" rel="noopener">Live <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a href="#" target="_blank" rel="noopener">Code <i class="fa-brands fa-github"></i></a>
+          </div>
+        </article>
+
+        <article class="project-card corner-frame">
+          <p class="file-id">FILE_02</p>
+          <h3>[PROJECT TWO — Name]</h3>
+          <p class="project-desc">[Describe the problem, your role, and the outcome in 1–2 sentences.]</p>
+          <div class="tag-row">
+            <span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Stripe</span>
+          </div>
+          <div class="project-links">
+            <a href="#" target="_blank" rel="noopener">Live <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a href="#" target="_blank" rel="noopener">Code <i class="fa-brands fa-github"></i></a>
+          </div>
+        </article>
+
+        <article class="project-card corner-frame">
+          <p class="file-id">FILE_03</p>
+          <h3>[PROJECT THREE — Name]</h3>
+          <p class="project-desc">[Describe the problem, your role, and the outcome in 1–2 sentences.]</p>
+          <div class="tag-row">
+            <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Docker</span>
+          </div>
+          <div class="project-links">
+            <a href="#" target="_blank" rel="noopener">Live <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a href="#" target="_blank" rel="noopener">Code <i class="fa-brands fa-github"></i></a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section class="section section-alt" id="experience">
+    <div class="section-inner">
+      <p class="eyebrow">SHEET 04 / 05 — LOG</p>
+      <h2 class="section-title">Experience</h2>
+      <div class="timeline">
+
+        <div class="timeline-entry">
+          <div class="timeline-mark"></div>
+          <p class="timeline-date">[YYYY — Present]</p>
+          <h3 class="timeline-role">[EXP: Job Title] · <span>[Company]</span></h3>
+          <p class="timeline-desc">[What you owned and shipped in this role, one or two sentences.]</p>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-mark"></div>
+          <p class="timeline-date">[YYYY — YYYY]</p>
+          <h3 class="timeline-role">[EXP: Job Title] · <span>[Company]</span></h3>
+          <p class="timeline-desc">[What you owned and shipped in this role, one or two sentences.]</p>
+        </div>
+
+        <div class="timeline-entry">
+          <div class="timeline-mark"></div>
+          <p class="timeline-date">[YYYY — YYYY]</p>
+          <h3 class="timeline-role">[EXP: Job Title] · <span>[Company]</span></h3>
+          <p class="timeline-desc">[What you owned and shipped in this role, one or two sentences.]</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="section" id="contact">
+    <div class="section-inner">
+      <p class="eyebrow">SHEET 05 / 05 — TRANSMIT</p>
+      <div class="contact-grid">
+        <div class="contact-copy">
+          <h2 class="section-title">Let's build something</h2>
+          <p>Open to new projects and roles. The fastest way to reach me is email — I read every message.</p>
+          <a class="contact-email" href="mailto:[EMAIL]">[EMAIL]<i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <form class="contact-form corner-frame" id="contactForm" data-to="[EMAIL]">
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" required>
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" required>
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <button type="submit" class="btn btn-primary btn-block">
+            <span>Send message</span><i class="fa-solid fa-paper-plane"></i>
+          </button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span>© <span id="year"></span> [NAME]. Built from scratch.</span>
+    <div class="footer-socials">
+      <a href="#" aria-label="GitHub" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i></a>
+      <a href="#" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="#" aria-label="Twitter / X" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script src="../static/script.js"></script>
+</body>
+</html>
