@@ -1,118 +1,110 @@
-/* ============================================================
-   PORTFOLIO SCRIPT
-   Handles: scroll progress, sticky nav, mobile menu,
-   active-link tracking, scroll-reveal, and the contact form.
-   ============================================================ */
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ---------- Footer year ---------- */
+  // Update Copyright Year
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------- Scroll progress bar + sticky nav ---------- */
-  const progressBar = document.getElementById('progressBar');
+  // Elements
   const navbar = document.getElementById('navbar');
-
-  function onScroll() {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    if (progressBar) progressBar.style.width = pct + '%';
-    if (navbar) navbar.classList.toggle('is-scrolled', scrollTop > 40);
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  /* ---------- Mobile nav toggle ---------- */
+  const progressBar = document.getElementById('progressBar');
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
+  const navItems = document.querySelectorAll('[data-nav]');
+  const reveals = document.querySelectorAll('.reveal');
 
+  // ================= Scroll Handling =================
+  function handleScroll() {
+    const scrollY = window.scrollY;
+    
+    // Navbar styling on scroll
+    if (scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+
+    // Scroll Progress Bar
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) {
+      const scrolled = (scrollY / docHeight) * 100;
+      progressBar.style.width = scrolled + '%';
+    } else {
+      progressBar.style.width = '0%';
+    }
+
+    // Reveal Animations
+    const windowHeight = window.innerHeight;
+    const elementVisible = 100;
+
+    reveals.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      if (elementTop < windowHeight - elementVisible) {
+        element.classList.add('active');
+      }
+    });
+
+    // Active Nav Link highlighting
+    const sections = document.querySelectorAll('section, header');
+    sections.forEach(current => {
+      const sectionHeight = current.offsetHeight;
+      const sectionTop = current.offsetTop - 150;
+      const sectionId = current.getAttribute('id');
+      
+      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+        navItems.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + sectionId) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll(); // Trigger on initial load
+
+  // ================= Mobile Navigation =================
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('is-open');
-      navToggle.classList.toggle('is-active', isOpen);
-      navToggle.setAttribute('aria-expanded', String(isOpen));
+      navLinks.classList.toggle('active');
     });
 
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('is-open');
-        navToggle.classList.remove('is-active');
-        navToggle.setAttribute('aria-expanded', 'false');
+    // Close menu when link clicked
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navLinks.classList.remove('active');
       });
     });
   }
 
-  /* ---------- Active nav link on scroll ---------- */
-  const sections = document.querySelectorAll('main section[id], header[id]');
-  const navAnchors = document.querySelectorAll('[data-nav]');
-
-  if (sections.length && navAnchors.length && 'IntersectionObserver' in window) {
-    const navObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const id = entry.target.getAttribute('id');
-        navAnchors.forEach(a => {
-          a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
-        });
-      });
-    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-
-    sections.forEach(section => navObserver.observe(section));
-  }
-
-  /* ---------- Scroll-reveal ---------- */
-  const revealSelectors = [
-    '#about .section-title', '#about .about-body', '.skill-card',
-    '.project-card', '.timeline-entry', '#skills .section-title',
-    '#projects .section-title', '#experience .section-title',
-    '.contact-copy', '.contact-form'
-  ];
-  const revealEls = document.querySelectorAll(revealSelectors.join(','));
-
-  if ('IntersectionObserver' in window) {
-    revealEls.forEach((el, i) => {
-      el.classList.add('reveal');
-      el.style.transitionDelay = (i % 4) * 70 + 'ms';
-    });
-
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-
-    revealEls.forEach(el => revealObserver.observe(el));
-  } else {
-    revealEls.forEach(el => el.classList.add('reveal', 'is-visible'));
-  }
-
-  /* ---------- Contact form ---------- */
-  const form = document.getElementById('contactForm');
-  const formNote = document.getElementById('formNote');
-
-  if (form) {
-    form.addEventListener('submit', (e) => {
+  // ================= Contact Form Handling =================
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const to = form.dataset.to || '';
-      const name = form.name.value.trim();
-      const email = form.email.value.trim();
-      const message = form.message.value.trim();
-
-      if (!to || to.includes('[EMAIL]')) {
-        if (formNote) formNote.textContent = 'Set your email in the form\u2019s data-to attribute to enable sending.';
-        return;
-      }
-
-      const subject = encodeURIComponent('Portfolio inquiry from ' + name);
-      const body = encodeURIComponent(message + '\n\n\u2014 ' + name + ' (' + email + ')');
-      window.location.href = 'mailto:' + to + '?subject=' + subject + '&body=' + body;
-      if (formNote) formNote.textContent = 'Opening your email client\u2026';
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      const btn = document.getElementById('submitBtn');
+      
+      // Update this email to your actual email
+      const targetEmail = 'lohith@example.com'; 
+      const mailtoLink = `mailto:${targetEmail}?subject=Portfolio Inquiry from ${name}&body=${encodeURIComponent(message + '\n\nSender Email: ' + email)}`;
+      
+      window.location.href = mailtoLink;
+      
+      // UI Feedback
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Opening Mail App...';
+      btn.style.backgroundColor = '#10B981'; // Green
+      
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.backgroundColor = '';
+        contactForm.reset();
+      }, 3000);
     });
   }
-
 });
