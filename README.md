@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/30828069/README.md)
 # 🚀 Lohith R — Personal Portfolio Website
 
 A sleek, modern, light-theme, and responsive developer portfolio website designed for **Lohith R**, Python Developer & Software Engineer based in Bengaluru, Karnataka, India.
