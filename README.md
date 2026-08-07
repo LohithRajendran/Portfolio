@@ -1,58 +1,74 @@
-# Portfolio
+[README.md](https://github.com/user-attachments/files/30828069/README.md)
+# 🚀 Lohith R — Personal Portfolio Website
 
-A premium, dark "blueprint" themed developer portfolio — no framework, just HTML/CSS/JS.
+A sleek, modern, light-theme, and responsive developer portfolio website designed for **Lohith R**, Python Developer & Software Engineer based in Bengaluru, Karnataka, India.
 
-## Structure
+---
 
+## 🌟 Features
+
+- **Modern & Premium Light UI**: Designed using custom CSS tokens, smooth glassmorphism accents, ambient gradient background orbs, and clean typography (`Outfit` & `Inter`).
+- **Interactive Hero Section**: Includes a dynamic typing animation cycling through developer roles, floating quick-stats cards, custom profile avatar frame, and quick social links.
+- **About Me & Key Metrics**: Highlights career background, education, and animated stats counters (Projects, Experience, CGPA, Certifications).
+- **Comprehensive Technical Skills**: Categorized skills (Languages, Core Python, Databases, REST APIs, Tools & Testing) alongside animated proficiency bars.
+- **Work Experience Timeline**: Structured career timeline showcasing achievements and role responsibilities at Straive as a Manual Test Engineer.
+- **Deduplicated Featured Projects**: Shows unique public GitHub repositories without duplicate project entries:
+  - 🏦 **Full-Stack Banking Management System** (*JavaScript, HTML/CSS*)
+  - 💰 **Banking Management System** (*Console-based Python with OOP & JSON Storage*)
+  - 🏫 **School Management System** (*Modular Python & OOP*)
+- **Education & Certifications**: Detailed academic record (B.E. CSE, HSC, SSLC) and certification badges (Python, SQL, LeetCode/HackerRank).
+- **Contact Section & Form**: Quick contact links (Email, Phone, LinkedIn, LeetCode, GitHub) and a functional front-end message form with interactive state handlers.
+- **Responsive Layout & Micro-animations**: Mobile-friendly hamburger menu, scroll-reveal animations using `IntersectionObserver`, and smooth hover effects.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: HTML5, CSS3 (Vanilla CSS with design tokens), JavaScript (ES6+)
+- **Typography & Icons**: Google Fonts (`Outfit`, `Inter`), SVG Icons
+- **Design System**: CSS Custom Properties, Flexbox & Grid layouts, Glassmorphism, CSS Animations & Transitions
+
+---
+
+## 📁 Project Structure
+
+```text
+portflio/
+├── index.html                                 # Main HTML document structure
+├── style.css                                  # Custom styling, design tokens & responsive media queries
+├── script.js                                  # Interactive features, typed text, scroll animations & DOM handlers
+├── Resume_Lohith_R.pdf                        # Resume PDF file linked across the site
+├── WhatsApp Image 2026-07-16 at 12.34.28 PM.jpeg # Profile picture
+└── README.md                                  # Project documentation
 ```
-portfolio/
-├── source/
-│   ├── template/
-│   │   └── index.html      # the page
-│   └── static/
-│       ├── style.css       # theme + layout
-│       └── script.js       # nav, scroll effects, contact form
-├── images/
-│   └── profile.jpg         # placeholder — replace with your photo
-├── assets/
-│   └── resume.pdf          # placeholder — replace with your resume
-└── README.md
-```
 
-## Customize
+---
 
-Open `source/template/index.html` and replace every bracketed placeholder:
+## 🚀 Getting Started
 
-- `[NAME]`, `[ROLE]`, `[TAGLINE]` — hero copy
-- `[ABOUT ...]`, `[CITY, COUNTRY]`, focus/availability — About section
-- Skill cards — swap the Font Awesome icon class, label, and `data-level` (1–5)
-- `[PROJECT ...]` cards — title, description, tags, live/code links
-- `[EXP ...]` entries — job title, company, dates, description
-- `[EMAIL]` — appears twice: the mailto link and the form's `data-to` attribute
-- `[SOCIAL ...]` links — GitHub / LinkedIn / X hrefs (hero and footer)
+No external frameworks or build tools are required to run this portfolio!
 
-Then swap `images/profile.jpg` and `assets/resume.pdf` for your own files (keep the same filenames, or update the two paths in `index.html` if you rename them).
+1. **Clone or Download** the repository to your local machine:
+   ```bash
+   git clone https://github.com/LohithRajendran/portfolio.git
+   ```
+2. Navigate into the project folder:
+   ```bash
+   cd portfolio
+   ```
+3. Open `index.html` directly in any browser of your choice, or use a local dev server such as Live Server in VS Code.
 
-## Preview locally
+---
 
-No build step required. Either:
-- Open `source/template/index.html` directly in a browser, or
-- Serve it so relative paths behave the same as they will on GitHub:
-  ```bash
-  cd portfolio
-  python3 -m http.server 8000
-  # visit http://localhost:8000/source/template/index.html
-  ```
+## 🔗 Live Social Links
 
-## Deploying with GitHub Pages
+- **GitHub**: [github.com/LohithRajendran](https://github.com/LohithRajendran)
+- **LinkedIn**: [linkedin.com/in/lohithrajendran](https://www.linkedin.com/in/lohithrajendran/)
+- **LeetCode**: [leetcode.com/u/cibilohith_08](https://leetcode.com/u/cibilohith_08/)
+- **Email**: [cibilohith1@gmail.com](mailto:cibilohith1@gmail.com)
 
-GitHub Pages serves from the repo root (or `/docs`) by default — it won't automatically find `index.html` nested inside `source/template/`. Two easy options:
+---
 
-1. **Flatten for deploy**: copy `source/template/index.html` to the repo root and update its three relative paths (`../static/` → `source/static/`, `../../images/` → `images/`, `../../assets/` → `assets/`).
-2. **Redirect stub**: add a one-line `index.html` at the repo root with `<meta http-equiv="refresh" content="0; url=source/template/index.html">` so Pages hands off to the real page. (Ask and this can be added for you.)
+## 📜 License
 
-## Notes
-
-- Fonts (Fraunces, IBM Plex Mono, Inter) and Font Awesome load from CDNs — no install needed, just internet access at page-load time.
-- Respects `prefers-reduced-motion` and has visible keyboard focus states.
-- Fully responsive with a mobile nav menu below 720px.
+This project is open source and available under the [MIT License](LICENSE).
