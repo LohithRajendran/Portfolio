@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4F46E5,100:7C3AED&height=200&section=header&text=Lohith%20R&fontSize=55&fontColor=ffffff&fontAlignY=35&animation=fadeIn&desc=Python%20Developer%20%26%20Software%20Engineer&descAlignY=55&descSize=18" alt="Lohith R banner" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4F46E5,100:7C3AED&height=200&section=header&text=Lohith%20R&fontSize=55&fontColor=ffffff&animation=fadeIn" alt="Lohith R banner" />
 </p>
 
 <p align="center">
