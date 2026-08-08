@@ -1,3 +1,11 @@
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4F46E5,100:7C3AED&height=200&section=header&text=Lohith%20R&fontSize=55&fontColor=ffffff&fontAlignY=35&animation=fadeIn&desc=Python%20Developer%20%26%20Software%20Engineer&descAlignY=55&descSize=18" alt="Lohith R banner" />
+</p>
+
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com/?font=Inter&weight=600&size=22&pause=1000&color=4F46E5&center=true&vCenter=true&width=520&lines=Python+Developer;Problem+Solver;OOP+Enthusiast;API+Builder;SQL+Developer" alt="Typing SVG" />
+</p>
+
 # 🚀 Lohith R — Personal Portfolio Website
 
 A sleek, modern, light-theme, and responsive developer portfolio website designed for **Lohith R**, Python Developer & Software Engineer based in Bengaluru, Karnataka, India.
@@ -13,8 +21,9 @@ A sleek, modern, light-theme, and responsive developer portfolio website designe
 - **Work Experience Timeline**: Structured career timeline showcasing achievements and role responsibilities at Straive as a Manual Test Engineer.
 - **Deduplicated Featured Projects**: Shows unique public GitHub repositories without duplicate project entries:
   - 🏦 **Full-Stack Banking Management System** (*JavaScript, HTML/CSS*)
-  - 💰 **Banking Management System** (*Console-based Python with OOP & JSON Storage*)
+  - 📄 **Citation-Aware PDF RAG** (*Python, FastAPI, Qdrant — RAG with verifiable citations*)
   - 🏫 **School Management System** (*Modular Python & OOP*)
+- **3D Tilt Project Cards**: Each project card tilts and lifts in real 3D space as you move your cursor over it, with a soft radial glow that follows the pointer — built with vanilla JS and CSS `perspective()` transforms.
 - **Education & Certifications**: Detailed academic record (B.E. CSE, HSC, SSLC) and certification badges (Python, SQL, LeetCode/HackerRank).
 - **Contact Section & Form**: Quick contact links (Email, Phone, LinkedIn, LeetCode, GitHub) and a functional front-end message form with interactive state handlers.
 - **Responsive Layout & Micro-animations**: Mobile-friendly hamburger menu, scroll-reveal animations using `IntersectionObserver`, and smooth hover effects.
@@ -35,7 +44,7 @@ A sleek, modern, light-theme, and responsive developer portfolio website designe
 portflio/
 ├── index.html                                 # Main HTML document structure
 ├── style.css                                  # Custom styling, design tokens & responsive media queries
-├── script.js                                  # Interactive features, typed text, scroll animations & DOM handlers
+├── scripts.js                                 # Interactive features, typed text, scroll animations, 3D tilt & DOM handlers
 ├── Resume_Lohith_R.pdf                        # Resume PDF file linked across the site
 ├── WhatsApp Image 2026-07-16 at 12.34.28 PM.jpeg # Profile picture
 └── README.md                                  # Project documentation
@@ -71,3 +80,7 @@ No external frameworks or build tools are required to run this portfolio!
 ## 📜 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:7C3AED,100:4F46E5&height=120&section=footer&animation=fadeIn" alt="footer wave" />
+</p>
