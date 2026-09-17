@@ -19,10 +19,10 @@ A sleek, modern, light-theme, and responsive developer portfolio website designe
 - **About Me & Key Metrics**: Highlights career background, education, and animated stats counters (Projects, Experience, CGPA, Certifications).
 - **Comprehensive Technical Skills**: Categorized skills (Languages, Core Python, Databases, REST APIs, Tools & Testing) alongside animated proficiency bars.
 - **Work Experience Timeline**: Structured career timeline showcasing achievements and role responsibilities at Straive as a Manual Test Engineer.
-- **Deduplicated Featured Projects**: Shows unique public GitHub repositories without duplicate project entries:
+- **Featured Projects**: Curated highlights from my public GitHub repositories:
   - 🏦 **Full-Stack Banking Management System** (*JavaScript, HTML/CSS*)
-  - 📄 **Citation-Aware PDF RAG** (*Python, FastAPI, Qdrant — RAG with verifiable citations*)
-  - 🏫 **School Management System** (*Modular Python & OOP*)
+  - 🌊 **Ocean Tracking System — OceanWatch** (*Python, FastAPI, WebSockets, Geospatial — **ongoing***)
+- **Auto-Synced Mini Python Projects**: A live list generated at runtime from the [`python-mini-projects`](https://github.com/LohithRajendran/python-mini-projects) repository via the GitHub REST API. Each top-level folder (or loose `.py` file) becomes a card automatically — titles are derived from folder names, descriptions from each folder's `README.md`, and tags are inferred from the files present. **No portfolio edit is needed when a new mini project is pushed.**
 - **3D Tilt Project Cards**: Each project card tilts and lifts in real 3D space as you move your cursor over it, with a soft radial glow that follows the pointer — built with vanilla JS and CSS `perspective()` transforms.
 - **Education & Certifications**: Detailed academic record (B.E. CSE, HSC, SSLC) and certification badges (Python, SQL, LeetCode/HackerRank).
 - **Contact Section & Form**: Quick contact links (Email, Phone, LinkedIn, LeetCode, GitHub) and a functional front-end message form with interactive state handlers.
