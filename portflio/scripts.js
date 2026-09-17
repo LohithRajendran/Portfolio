@@ -189,6 +189,9 @@ window.addEventListener('scroll', () => {
 });
 
 /* ── CURSOR GLOW EFFECT (desktop) ── */
+// Exposed so dynamically-rendered cards (mini projects) can hook in too.
+let bindCursorGlow = () => { };
+
 if (window.matchMedia('(pointer:fine)').matches) {
   const cursor = document.createElement('div');
   cursor.style.cssText = `
@@ -208,18 +211,22 @@ if (window.matchMedia('(pointer:fine)').matches) {
   });
 
   // Enlarge on interactive elements
-  document.querySelectorAll('a, button, .project-card, .skill-tag').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '48px';
-      cursor.style.height = '48px';
-      cursor.style.background = 'rgba(79,70,229,.1)';
+  bindCursorGlow = (elements) => {
+    elements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '48px';
+        cursor.style.height = '48px';
+        cursor.style.background = 'rgba(79,70,229,.1)';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '28px';
+        cursor.style.height = '28px';
+        cursor.style.background = 'rgba(79,70,229,.15)';
+      });
     });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '28px';
-      cursor.style.height = '28px';
-      cursor.style.background = 'rgba(79,70,229,.15)';
-    });
-  });
+  };
+
+  bindCursorGlow(document.querySelectorAll('a, button, .project-card, .skill-tag'));
 }
 
 /* ── PAGE LOAD ANIMATION ── */
@@ -229,3 +236,286 @@ window.addEventListener('load', () => {
 
 document.body.style.opacity = '0';
 document.body.style.transition = 'opacity 0.4s ease';
+
+/* ─────────────────────────────────────────────
+   MINI PYTHON PROJECTS — AUTO-SYNC FROM GITHUB
+   Every top-level folder (or loose .py file) in the
+   python-mini-projects repo becomes a card here.
+   Push a new folder → it shows up on its own.
+   ───────────────────────────────────────────── */
+
+const MINI_CFG = {
+  owner: 'LohithRajendran',
+  repo: 'python-mini-projects',
+  branch: 'main',
+  cacheMinutes: 10,
+  // Folders that are not projects
+  ignore: ['assets', 'docs', 'images', 'img', 'media', 'tests', 'venv', 'node_modules']
+};
+
+/* Optional hand-written details. Key = folder name in lowercase.
+   Anything left out falls back to the folder's README.md,
+   and then to an auto-generated description. */
+const MINI_OVERRIDES = {
+  'quiz_game': {
+    title: 'Python Quiz Game',
+    icon: '❓',
+    desc: 'A command-line quiz game that asks multiple-choice questions, validates answers and keeps a running score.',
+    tags: ['Python', 'CLI', 'Logic']
+  }
+};
+
+const miniGrid = document.getElementById('mini-grid');
+const miniCount = document.getElementById('mini-count');
+const miniNote = document.getElementById('mini-note');
+
+/* ── helpers ── */
+const miniRepoUrl = `https://github.com/${MINI_CFG.owner}/${MINI_CFG.repo}`;
+
+function miniPrettify(name) {
+  return name
+    .replace(/[_\-]+/g, ' ')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+function miniPickIcon(name) {
+  const n = name.toLowerCase();
+  const map = [
+    ['quiz', '❓'], ['game', '🎮'], ['calc', '🧮'], ['convert', '🔄'],
+    ['password', '🔐'], ['weather', '⛅'], ['todo', '📝'], ['task', '📝'],
+    ['bank', '🏦'], ['atm', '🏧'], ['dice', '🎲'], ['tic', '⭕'],
+    ['scrap', '🕸️'], ['bot', '🤖'], ['chat', '💬'], ['file', '📁'],
+    ['timer', '⏱️'], ['clock', '⏰'], ['email', '📧'], ['api', '🔌'],
+    ['data', '📊'], ['chart', '📈'], ['image', '🖼️'], ['music', '🎵']
+  ];
+  for (const [key, emoji] of map) if (n.includes(key)) return emoji;
+  return '🐍';
+}
+
+function miniInferTags(name, files) {
+  const tags = ['Python'];
+  const blob = (name + ' ' + files.join(' ')).toLowerCase();
+  if (blob.includes('tkinter') || blob.includes('gui')) tags.push('Tkinter');
+  if (files.some(f => f.endsWith('.json'))) tags.push('JSON');
+  if (files.some(f => f.toLowerCase() === 'requirements.txt')) tags.push('Libraries');
+  if (tags.length === 1) tags.push('CLI');
+  return tags;
+}
+
+function miniAutoDesc(pyCount, files) {
+  if (pyCount === 1) {
+    const f = files.find(x => x.endsWith('.py'));
+    return `A single-file Python mini project (${f}).`;
+  }
+  if (pyCount > 1) return `A Python mini project built across ${pyCount} modules.`;
+  return 'A small Python project from my mini-projects collection.';
+}
+
+/* Pull the first real paragraph out of a README */
+function miniFirstParagraph(md) {
+  const lines = md.split('\n');
+  const buf = [];
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) { if (buf.length) break; else continue; }
+    if (line.startsWith('#') || line.startsWith('![') || line.startsWith('---') ||
+      line.startsWith('```') || line.startsWith('|') || line.startsWith('>')) {
+      if (buf.length) break; else continue;
+    }
+    buf.push(line);
+    if (buf.join(' ').length > 200) break;
+  }
+  let text = buf.join(' ')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')   // links → text
+    .replace(/[*_`]/g, '')                      // md emphasis
+    .trim();
+  if (text.length > 190) text = text.slice(0, 187).replace(/\s\S*$/, '') + '…';
+  return text;
+}
+
+/* ── build the project list from one tree request ── */
+async function miniFetchProjects() {
+  const { owner, repo, branch, ignore } = MINI_CFG;
+  const res = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`,
+    { headers: { Accept: 'application/vnd.github+json' } }
+  );
+  if (!res.ok) throw new Error(`GitHub API responded ${res.status}`);
+  const data = await res.json();
+  const tree = data.tree || [];
+
+  const folders = tree
+    .filter(n => n.type === 'tree' && !n.path.includes('/'))
+    .map(n => n.path)
+    .filter(p => !p.startsWith('.') && !p.startsWith('_') && !ignore.includes(p.toLowerCase()));
+
+  const items = folders.map(folder => {
+    const files = tree
+      .filter(n => n.type === 'blob' && n.path.startsWith(folder + '/'))
+      .map(n => n.path.slice(folder.length + 1));
+    const flat = files.map(f => f.split('/').pop());
+    return {
+      key: folder.toLowerCase(),
+      folder,
+      files: flat,
+      pyCount: flat.filter(f => f.endsWith('.py')).length,
+      hasReadme: files.some(f => f.toLowerCase() === 'readme.md'),
+      url: `${miniRepoUrl}/tree/${branch}/${encodeURIComponent(folder)}`
+    };
+  }).filter(i => i.pyCount > 0);
+
+  // Loose .py files sitting in the repo root also count as mini projects
+  tree
+    .filter(n => n.type === 'blob' && !n.path.includes('/') && n.path.endsWith('.py'))
+    .forEach(n => {
+      const base = n.path.replace(/\.py$/, '');
+      items.push({
+        key: base.toLowerCase(),
+        folder: base,
+        files: [n.path],
+        pyCount: 1,
+        hasReadme: false,
+        url: `${miniRepoUrl}/blob/${branch}/${encodeURIComponent(n.path)}`
+      });
+    });
+
+  // Descriptions from each folder's README (raw CDN — no API rate limit)
+  await Promise.all(items.map(async item => {
+    if (!item.hasReadme || MINI_OVERRIDES[item.key]) return;
+    try {
+      const r = await fetch(
+        `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${item.folder}/README.md`
+      );
+      if (r.ok) item.readmeDesc = miniFirstParagraph(await r.text());
+    } catch (_) { /* description is optional */ }
+  }));
+
+  items.sort((a, b) => a.folder.localeCompare(b.folder));
+  return items;
+}
+
+/* ── render ── */
+function miniRender(items) {
+  miniGrid.innerHTML = '';
+  miniGrid.setAttribute('aria-busy', 'false');
+
+  if (!items.length) {
+    miniGrid.innerHTML =
+      `<p class="mini-empty">No mini projects published yet — they'll appear here automatically.
+       <a href="${miniRepoUrl}" target="_blank" class="mini-repo-link">Browse the repo</a></p>`;
+    return;
+  }
+
+  const cards = items.map(item => {
+    const o = MINI_OVERRIDES[item.key] || {};
+    const title = o.title || miniPrettify(item.folder);
+    const icon = o.icon || miniPickIcon(item.folder);
+    const desc = o.desc || item.readmeDesc || miniAutoDesc(item.pyCount, item.files);
+    const tags = o.tags || miniInferTags(item.folder, item.files);
+
+    const a = document.createElement('a');
+    a.className = 'mini-card';
+    a.href = item.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.innerHTML = `
+      <div class="mini-card-top">
+        <span class="mini-card-icon">${icon}</span>
+        <h4 class="mini-card-title"></h4>
+      </div>
+      <p class="mini-card-desc"></p>
+      <div class="mini-card-tags"></div>
+      <span class="mini-card-foot">View code →</span>`;
+
+    a.querySelector('.mini-card-title').textContent = title;
+    a.querySelector('.mini-card-desc').textContent = desc;
+
+    const tagWrap = a.querySelector('.mini-card-tags');
+    tags.slice(0, 4).forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'tech-tag' + (t === 'Python' ? ' tech-python' : '');
+      span.textContent = t;
+      tagWrap.appendChild(span);
+    });
+
+    return a;
+  });
+
+  cards.forEach(c => miniGrid.appendChild(c));
+
+  miniCount.textContent = `${items.length} project${items.length === 1 ? '' : 's'}`;
+  miniCount.hidden = false;
+
+  miniNote.textContent = 'This list is pulled live from GitHub — new folders appear here automatically.';
+  miniNote.hidden = false;
+
+  // Hook the new cards into the existing scroll-reveal + cursor effects
+  cards.forEach(c => {
+    c.classList.add('reveal');
+    revealObserver.observe(c);
+  });
+  bindCursorGlow(cards);
+}
+
+function miniRenderError() {
+  miniGrid.setAttribute('aria-busy', 'false');
+  const fallback = Object.keys(MINI_OVERRIDES).map(key => ({
+    key,
+    folder: key,
+    files: [],
+    pyCount: 1,
+    url: `${miniRepoUrl}/tree/${MINI_CFG.branch}/${key}`
+  }));
+
+  if (fallback.length) {
+    miniRender(fallback);
+    miniNote.textContent = "Couldn't reach GitHub just now — showing the last known list.";
+    miniNote.hidden = false;
+    return;
+  }
+
+  miniGrid.innerHTML =
+    `<p class="mini-empty">Couldn't load the list right now.
+     <a href="${miniRepoUrl}" target="_blank" class="mini-repo-link">View them on GitHub →</a></p>`;
+}
+
+/* ── run (lazily, when the section comes into view) ── */
+async function miniLoad() {
+  const cacheKey = `mini-projects:${MINI_CFG.owner}/${MINI_CFG.repo}`;
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+    if (cached && Date.now() - cached.at < MINI_CFG.cacheMinutes * 60 * 1000) {
+      miniRender(cached.items);
+      return;
+    }
+  } catch (_) { /* cache is a nice-to-have */ }
+
+  try {
+    const items = await miniFetchProjects();
+    miniRender(items);
+    try {
+      sessionStorage.setItem(cacheKey, JSON.stringify({ at: Date.now(), items }));
+    } catch (_) { /* storage may be unavailable */ }
+  } catch (err) {
+    console.warn('Mini projects failed to load:', err);
+    miniRenderError();
+  }
+}
+
+if (miniGrid) {
+  const miniSection = document.getElementById('mini-projects');
+  const miniLoadObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        miniLoadObserver.unobserve(entry.target);
+        miniLoad();
+      }
+    });
+  }, { rootMargin: '250px' });
+  miniLoadObserver.observe(miniSection);
+}
